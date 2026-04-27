@@ -1,4 +1,6 @@
 const Project = require('../model/projectsSection');
+const fs = require('fs');
+const path = require('path');
 
 exports.getProjects = async (req, res) => {
     try {
@@ -8,7 +10,7 @@ exports.getProjects = async (req, res) => {
         if (category) {
             filter.category = category; 
         }
-        const projects = await Project.find(filter).limit(3).sort({ createdAt: -1 });
+        const projects = await Project.find(filter).sort({ createdAt: 1 });
         
         res.status(200).json(projects);
     } catch (error) {
@@ -29,8 +31,6 @@ exports.createProject = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
-const fs = require('fs');
-const path = require('path');
 
 exports.updateProject = async (req, res) => {
     try {
@@ -38,7 +38,6 @@ exports.updateProject = async (req, res) => {
         const project = await Project.findById(id);
 
         if (req.file) { 
-           
             if (project.image) {
                 const oldPath = path.join(__dirname, '..', project.image);
                 if (fs.existsSync(oldPath)) {
