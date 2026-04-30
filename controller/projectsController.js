@@ -53,3 +53,12 @@ exports.updateProject = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+exports.deleteProject = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Project.findByIdAndDelete(id);
+        res.status(200).json({ message: 'Project deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
