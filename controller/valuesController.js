@@ -25,11 +25,11 @@ exports.createValue = async (req, res) => {
         res.status(400).json({ message: "Error saving values", error: error.message });
     }
 };
-exports.updateHero = async (req, res) => {
+exports.updateValues = async (req, res) => {
     try {
         const { id } = req.params;
-        const updatedHero = await Hero.findOneAndUpdate(id, req.body, { new: true });
-        res.status(200).json(updatedHero);
+        const updated = await Value.findByIdAndUpdate(id, req.body, { new: true });
+        res.status(200).json(updated);
     } catch (error) {
         res.status(500).json({ message: "Error updating values", error: error.message });
     }

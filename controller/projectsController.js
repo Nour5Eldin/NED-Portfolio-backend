@@ -4,17 +4,15 @@ const path = require('path');
 
 exports.getProjects = async (req, res) => {
     try {
-        const { category } = req.query; 
-
+        const { category, mode } = req.query;
         let filter = {};
         if (mode !== 'admin') {
-            filter.status = 'published'
+            filter.status = 'published';
         }
         if (category) {
-            filter.category = category; 
+            filter.category = category;
         }
         const projects = await Project.find(filter).sort({ createdAt: 1 });
-        
         res.status(200).json(projects);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -59,15 +57,9 @@ exports.updateProject = async (req, res) => {
 exports.deleteProject = async (req, res) => {
     try {
         const { id } = req.params;
-        if (project && project.image) {
-            const imagePath = path.join(__dirname, '..', project.image);
-            if (fs.existsSync(imagePath)) {
-                fs.unlinkSync(imagePath);
-            }
-        }
         await Project.findByIdAndDelete(id);
         res.status(200).json({ message: 'Project deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
