@@ -27,6 +27,7 @@ exports.createTestimonial = async (req, res) => {
 };
 exports.updateTestimonial = async (req, res) => {
     try {
+        req.body.status = 'published';
         const updated = await Testimonial.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(200).json(updated);
     } catch (error) {

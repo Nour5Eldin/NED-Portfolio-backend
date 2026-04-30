@@ -36,6 +36,7 @@ exports.createProject = async (req, res) => {
 exports.updateProject = async (req, res) => {
     try {
         const id = req.params.id;
+        req.body.status = 'published';
         const project = await Project.findById(id);
 
         if (req.file) { 

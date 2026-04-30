@@ -27,6 +27,7 @@ exports.createValue = async (req, res) => {
 };
 exports.updateValues = async (req, res) => {
     try {
+        req.body.status = 'published';
         const { id } = req.params;
         const updated = await Value.findByIdAndUpdate(id, req.body, { new: true });
         res.status(200).json(updated);

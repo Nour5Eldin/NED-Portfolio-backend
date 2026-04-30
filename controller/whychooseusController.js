@@ -22,7 +22,7 @@ exports.updateWhyChooseUs = async (req, res) => {
         if (updateData.features && typeof updateData.features === 'string') {
             updateData.features = JSON.parse(updateData.features);
         }
-
+        updateData.status = 'published';
         if (req.file) {
             updateData.mainImage = `/uploads/${req.file.filename}`;
         }

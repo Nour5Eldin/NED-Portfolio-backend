@@ -35,7 +35,7 @@ exports.updateHero = async (req, res) => {
         if (req.file) {
             updateData.image = `/uploads/${req.file.filename}`;
         }
-
+        updateData.status = 'published';
         const updatedHero = await Hero.findByIdAndUpdate(id, updateData, { new: true });
         
         if (!updatedHero) return res.status(404).json({ message: "Hero not found" });

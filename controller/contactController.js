@@ -3,6 +3,7 @@ const Inquiry = require('../model/inquirySection');
 
 exports.updateContactInfo = async (req, res) => {
     try {
+        req.body.status = 'published';
         const info = await ContactInfo.findOneAndUpdate({}, req.body, {
             new: true,
             upsert: true,
