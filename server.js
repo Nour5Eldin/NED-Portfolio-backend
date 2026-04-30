@@ -28,7 +28,7 @@ app.use('/api/whychooseus', whychooseusRouter);
 app.use('/api/testimonials', testimonialsRouter);
 app.use('/api/contact', contactRouter);
 
-app.get('/admin/dashboard', async (req, res) => {
+app.get('/admin', async (req, res) => {
     try {
         const totalProjects = await Project.countDocuments({ status: 'published' });
         const unreadMessages = await Inquiry.countDocuments();
