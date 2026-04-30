@@ -2,7 +2,14 @@ const Testimonial = require('../model/testimonialsSection');
 
 exports.getTestimonials = async (req, res) => {
     try {
-        const testimonials = await Testimonial.find();
+        const filter = {};
+        if (req.query.mode !== 'admin') {
+            filter.status = 'published';
+        }
+        const testimonials = await Testimonial.find(filter);
+        if (!testimonials && req.query.mode !== 'admin') {
+            return res.status(404).json({ message: "No published Testimonials section found" });
+        }
         res.status(200).json(testimonials);
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });

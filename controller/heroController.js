@@ -2,7 +2,14 @@ const Hero = require('../model/heroSection');
 
 exports.getHero = async (req, res) => {
     try {
-        const hero = await Hero.findOne();
+        const filter = {};
+        if (req.query.mode !== 'admin') {
+            filter.status = 'published';
+        }
+        const hero = await Hero.findOne(filter).sort({ createdAt: -1 });
+        if (!hero && req.query.mode !== 'admin') {
+            return res.status(404).json({message: "No published content found"})
+        }
         res.status(200).json(hero);
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });

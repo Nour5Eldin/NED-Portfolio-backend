@@ -2,7 +2,14 @@ const About = require('../model/aboutSection');
 
 exports.getAbout = async (req, res) => {
     try {
-        const about = await About.findOne();
+        const filter = {};
+        if (req.query.mode !== 'admin') {
+            filter.status = 'published';
+        }
+        const about = await About.findOne(filter);
+        if (!about && req.query.mode !== 'admin') {
+            return res.status(404).json({ message: "No published About section found" });
+        }
         res.status(200).json(about);
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });

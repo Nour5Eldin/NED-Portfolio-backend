@@ -7,6 +7,9 @@ exports.getProjects = async (req, res) => {
         const { category } = req.query; 
 
         let filter = {};
+        if (mode !== 'admin') {
+            filter.status = 'published'
+        }
         if (category) {
             filter.category = category; 
         }
@@ -56,6 +59,12 @@ exports.updateProject = async (req, res) => {
 exports.deleteProject = async (req, res) => {
     try {
         const { id } = req.params;
+        if (project && project.image) {
+            const imagePath = path.join(__dirname, '..', project.image);
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        }
         await Project.findByIdAndDelete(id);
         res.status(200).json({ message: 'Project deleted successfully' });
     } catch (error) {

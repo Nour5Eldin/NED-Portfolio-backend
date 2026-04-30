@@ -10,7 +10,8 @@ const valueSchema = new mongoose.Schema({
             title: String,
             text: String
         }
-    ]
+    ],
+    status: { type: String, enum: ['draft', 'published'], default: 'draft' }
 });
 
 module.exports = mongoose.model('Value', valueSchema);
