@@ -10,8 +10,7 @@ const projectSchema = new mongoose.Schema({
         required: true 
     },
     image: { type: String },
-    createdAt: { type: Date, default: Date.now },
-    status: { type: String, enum: ['draft', 'published'], default: 'draft' }
+    createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Project', projectSchema);

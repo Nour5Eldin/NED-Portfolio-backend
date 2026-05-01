@@ -7,8 +7,7 @@ const heroSchema = new mongoose.Schema({
     image: String,
     buttons: [
         { text: String, link: String, type: { type: String } }
-    ],
-    status: { type: String, enum: ['draft', 'published'], default: 'draft' }
+    ]
 });
 
 module.exports = mongoose.model('Hero', heroSchema);

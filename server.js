@@ -30,7 +30,7 @@ app.use('/api/contact', contactRouter);
 
 app.get('/admin', async (req, res) => {
     try {
-        const totalProjects = await Project.countDocuments({ status: 'published' });
+        const totalProjects = await Project.countDocuments({ });
         const unreadMessages = await Inquiry.countDocuments();
         res.status(200).json({ totalProjects, unreadMessages });
     } catch (error) {

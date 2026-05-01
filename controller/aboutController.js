@@ -2,17 +2,10 @@ const About = require('../model/aboutSection');
 
 exports.getAbout = async (req, res) => {
     try {
-        const filter = {};
-        if (req.query.mode !== 'admin') {
-            filter.status = 'published';
-        }
-        const about = await About.findOne(filter);
-        if (!about && req.query.mode !== 'admin') {
-            return res.status(404).json({ message: "No published About section found" });
-        }
+        const about = await About.findOne();
         res.status(200).json(about);
     } catch (error) {
-        res.status(500).json({ message: "Server Error", error: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -37,11 +30,6 @@ exports.createAbout = async (req, res) => {
 exports.updateAbout = async (req, res) => {
     try {
         const { id } = req.params;
-        if (!req.file) {
-            console.log("Multer: No file received.");
-        } else {
-            console.log("Multer: File received successfully ->", req.file.filename);
-        }
 
         let updateData = { ...req.body };
 
@@ -49,26 +37,31 @@ exports.updateAbout = async (req, res) => {
             updateData.image = `/uploads/${req.file.filename}`;
         }
         if (updateData.items && typeof updateData.items === 'string') {
-            try {
-                updateData.items = JSON.parse(updateData.items);
-            } catch (parseError) {
-                return res.status(400).json({ message: "Invalid JSON format for items" });
-            }
+            updateData.items = JSON.parse(updateData.items);
         }
-        updateData.status = 'published';
         const updated = await About.findByIdAndUpdate(
-            id, 
-            updateData, 
+            id,
+            updateData,
             { new: true, runValidators: true }
         );
 
         if (!updated) {
-            return res.status(404).json({ message: "About section record not found" });
+            return res.status(404).json({
+                success: false,
+                message: "About section not found"
+            });
         }
 
-        res.status(200).json(updated);
+        return res.status(200).json({
+            success: true,
+            data: updated
+        });
+
     } catch (error) {
         console.error("Update Error:", error);
-        res.status(500).json({ message: "Server Error", error: error.message });
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 };

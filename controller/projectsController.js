@@ -4,14 +4,9 @@ const path = require('path');
 
 exports.getProjects = async (req, res) => {
     try {
-        const { category, mode } = req.query;
+        const { category } = req.query;
         let filter = {};
-        if (mode !== 'admin') {
-            filter.status = 'published';
-        }
-        if (category) {
-            filter.category = category;
-        }
+        if (category) filter.category = category;
         const projects = await Project.find(filter).sort({ createdAt: 1 });
         res.status(200).json(projects);
     } catch (error) {
@@ -36,7 +31,6 @@ exports.createProject = async (req, res) => {
 exports.updateProject = async (req, res) => {
     try {
         const id = req.params.id;
-        req.body.status = 'published';
         const project = await Project.findById(id);
 
         if (req.file) { 

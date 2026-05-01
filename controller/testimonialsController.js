@@ -2,17 +2,10 @@ const Testimonial = require('../model/testimonialsSection');
 
 exports.getTestimonials = async (req, res) => {
     try {
-        const filter = {};
-        if (req.query.mode !== 'admin') {
-            filter.status = 'published';
-        }
-        const testimonials = await Testimonial.find(filter);
-        if (!testimonials && req.query.mode !== 'admin') {
-            return res.status(404).json({ message: "No published Testimonials section found" });
-        }
+        const testimonials = await Testimonial.find();
         res.status(200).json(testimonials);
     } catch (error) {
-        res.status(500).json({ message: "Server Error", error: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -27,7 +20,6 @@ exports.createTestimonial = async (req, res) => {
 };
 exports.updateTestimonial = async (req, res) => {
     try {
-        req.body.status = 'published';
         const updated = await Testimonial.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(200).json(updated);
     } catch (error) {

@@ -2,13 +2,7 @@ const WhyChooseUs = require('../model/whychooseusSection');
 
 exports.getWhyChooseUs = async (req, res) => {
     try {
-        const { mode } = req.query;
-        let filter = {};
-        if (mode !== 'admin') {
-            filter.status = 'published';
-        }
-        const data = await WhyChooseUs.findOne(filter);
-        if(!data && mode !== 'admin') return res.status(404).json({message: "Content not found"})
+        const data = await WhyChooseUs.findOne();
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -22,7 +16,6 @@ exports.updateWhyChooseUs = async (req, res) => {
         if (updateData.features && typeof updateData.features === 'string') {
             updateData.features = JSON.parse(updateData.features);
         }
-        updateData.status = 'published';
         if (req.file) {
             updateData.mainImage = `/uploads/${req.file.filename}`;
         }
