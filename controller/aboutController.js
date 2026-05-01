@@ -52,10 +52,7 @@ exports.updateAbout = async (req, res) => {
             });
         }
 
-        return res.status(200).json({
-            success: true,
-            data: updated
-        });
+        return res.status(200).json(updated);
 
     } catch (error) {
         console.error("Update Error:", error);
